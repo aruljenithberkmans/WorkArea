@@ -1,0 +1,268 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:ViewModel="clr-namespace:CartesianChart.ViewModel" 
+             x:Class="CartesianChart.MainPage">
+    <ContentPage.BindingContext>
+        <ViewModel:UnemployeementViewModel  x:Name="viewModel"/>
+       
+    </ContentPage.BindingContext>
+  
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="800"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            
+
+        </Grid.ColumnDefinitions>
+        <chart:SfCartesianChart  IsTransposed="False" x:Name="Charts" Grid.Column="0"  >
+            
+           
+            
+            <chart:SfCartesianChart.ZoomPanBehavior>
+                <chart:ChartZoomPanBehavior />
+            </chart:SfCartesianChart.ZoomPanBehavior>
+
+            <!--<chart:SfCartesianChart.SelectionBehavior>
+                <chart:SeriesSelectionBehavior x:Name="Select" SelectionBrush="blue" Type="SingleDeselect" />
+            </chart:SfCartesianChart.SelectionBehavior>-->
+
+           
+            <chart:SfCartesianChart.Resources >
+
+               
+                    <DataTemplate x:Key="legendTemplate">
+                        <Grid ColumnDefinitions="Auto,Auto,Auto">
+                            <Label Grid.Column="0"
+                                      VerticalTextAlignment="Center"
+                                      HorizontalTextAlignment="Center"
+                                      Text="{Binding Item.Year}"
+                                      TextColor="Black"/>   
+
+                            <BoxView Grid.Column="1"
+                                      Color="Green"
+                                      HorizontalOptions="Center"
+                                      VerticalOptions="Center"
+                                     HeightRequest="10"
+                                     WidthRequest="10" />   
+
+                            <Label Grid.Column="2"
+                                     VerticalTextAlignment="Center"
+                                     HorizontalTextAlignment="Center"
+                                     Text="{Binding Item.Rate}"
+                                     TextColor="Black"/>    
+                        </Grid>
+                    </DataTemplate>
+             
+                <DoubleCollection x:Key="DashArray">
+                    <x:Double>3</x:Double>
+                    <x:Double>2</x:Double>
+                
+                </DoubleCollection>
+
+                <DataTemplate x:Key="Template">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Year :" TextColor="White"></Label>
+                            <Label Text="{Binding Item.Year}"  TextColor="White"/>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Rate :" TextColor="White"/>
+                            <Label Text="{Binding Item.Rate}" TextColor="White"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                </DataTemplate>
+                
+                <!--<DataTemplate x:Key="legendTemplate">
+
+                    <StackLayout Orientation="Horizontal">
+                        <BoxView BackgroundColor="Green"/>
+                    </StackLayout>
+                    
+                </DataTemplate>-->
+
+            </chart:SfCartesianChart.Resources>
+
+            <chart:SfCartesianChart.TrackballBehavior>
+                <chart:ChartTrackballBehavior/>
+            </chart:SfCartesianChart.TrackballBehavior>
+
+
+            <chart:SfCartesianChart.Title>
+                <Label Text="UnEmployement  Comparison" VerticalOptions="Center" HorizontalOptions="Start" />
+            </chart:SfCartesianChart.Title>
+
+            <chart:SfCartesianChart.Legend >
+                <chart:ChartLegend IsVisible="True" Placement="Top"/>
+            </chart:SfCartesianChart.Legend>
+
+            <chart:SfCartesianChart.XAxes  >
+                <chart:DateTimeAxis IsVisible="True" Interval="1"  IntervalType="Years" RangePadding="Additional"  >
+                    <chart:DateTimeAxis.LabelStyle>
+                        <chart:ChartAxisLabelStyle FontSize="20" TextColor="Green"/>
+                    </chart:DateTimeAxis.LabelStyle>
+                    <chart:DateTimeAxis.Title>
+                        <chart:ChartAxisTitle Text="Year"/>
+                    </chart:DateTimeAxis.Title>
+                </chart:DateTimeAxis>
+            </chart:SfCartesianChart.XAxes>
+
+            <chart:SfCartesianChart.YAxes >
+                <chart:NumericalAxis  RangePadding="Additional" Name="FirstAxis">
+                    
+                    <chart:NumericalAxis.AxisLineStyle>
+                        <chart:ChartLineStyle />
+                    </chart:NumericalAxis.AxisLineStyle>
+                    <chart:NumericalAxis.Title>
+                        <chart:ChartAxisTitle Text="Rate (in percentage)"/>
+                    </chart:NumericalAxis.Title>
+                </chart:NumericalAxis>
+                
+                <chart:NumericalAxis  RangePadding="Additional" Name="SecondAxis" >
+
+                    <chart:NumericalAxis.AxisLineStyle>
+                        <chart:ChartLineStyle />
+                    </chart:NumericalAxis.AxisLineStyle>
+                    <chart:NumericalAxis.Title>
+                        <chart:ChartAxisTitle Text="Rate (in percentage)"/>
+                    </chart:NumericalAxis.Title>
+                </chart:NumericalAxis>
+            </chart:SfCartesianChart.YAxes>
+
+
+            <chart:SfCartesianChart.Series >
+                <chart:StepLineSeries x:Name="Stepline"  ItemsSource="{Binding Data}"
+                                      XBindingPath="Year"
+                                      YBindingPath="Rate"
+                                        EnableAnimation="True"
+                                     
+                                      EnableTooltip="{Binding Source={x:Reference tooltip},Path=SelectedItem}"
+                                        Label="US Unemployee Rate"
+                                        ShowMarkers="True"
+                                      ShowTrackballLabel="True"                                      
+                                      StrokeWidth="{Binding Source={x:Reference entry},Path=SelectedItem}"
+                                      Fill="{Binding Source={x:Reference fill}, Path=SelectedItem}"
+                                     
+                                      IsVisible="{Binding Source={x:Reference visible},Path=SelectedItem}"
+                                      Opacity="{Binding Source={x:Reference opacity},Path=SelectedItem}"
+                                      
+                                                   >
+                
+                    <!--<chart:StepLineSeries.SelectionBehavior>
+                        <chart:DataPointSelectionBehavior SelectedIndex="2" SelectionBrush="green">
+                        </chart:DataPointSelectionBehavior>
+                    </chart:StepLineSeries.SelectionBehavior>-->
+                    <!--<chart:LineSeries.SelectionBehavior>
+                        <chart:DataPointSelectionBehavior Type="SingleDeselect" SelectionBrush="blue" />
+                    </chart:LineSeries.SelectionBehavior>-->
+
+                   
+                </chart:StepLineSeries>
+
+               
+                <chart:StepLineSeries x:Name="UAERate" ItemsSource="{Binding Data }"
+                                   XBindingPath="Year"
+                                   YBindingPath="UAERate"    
+                                     
+                                   EnableAnimation="True"
+                                   EnableTooltip="True"
+                                   Label="UAE Unemployee Rate"
+                                   ShowMarkers="True"
+                                   StrokeDashArray="{StaticResource DashArray}"
+                                   Opacity="5"                     
+                                 >
+                   
+                </chart:StepLineSeries>
+            </chart:SfCartesianChart.Series>
+         
+     
+        </chart:SfCartesianChart>
+        <Frame  Grid.Column="1" >
+            <StackLayout >
+                <!--<Label Text="Click button to dynamic animation "></Label>
+                <Button x:Name="button" WidthRequest="500" HeightRequest="50" Text="Click" Clicked="Button_Clicked"/>
+                <Label Text="IsVisibleProperty"/>
+                <Switch IsToggled="True" Toggled="Switch_Toggled" IsEnabled="True" />
+                <Label Text="Dynamically insert the Series"></Label>
+                <Button Text="Click" WidthRequest="500" HeightRequest="50" Clicked="AddSeriesClicked"/>
+               
+                <Button Text="Remove" HeightRequest="50" WidthRequest="500" Clicked="RemoveDataPointFirstIndexClicked"/>
+                <Button Text="Add" HeightRequest="50" WidthRequest="500" Clicked="InsertDataPointFirstIndexClicked"/>
+                <Button Text="Clear" HeightRequest="50" WidthRequest="500" Clicked="ClearItemSourceOfSeries"/>
+                <Label Text="Add Data Points"/>-->
+                <Button Text=" click" HeightRequest="50" WidthRequest="500" Clicked="AddDataPointClicked"/>
+                <Button Text=" Add another" Clicked="AddAnotherPoints"/>
+                <Button Text="Add" HeightRequest="50" WidthRequest="500" Clicked="InsertDataPointFirstIndexClicked"/>
+                <!--<Button Text="LegendIconChange" HeightRequest="50" WidthRequest="500" Clicked="LegendIconChangeClicked"/>
+                <Button Text="labelTemplate" HeightRequest="50" WidthRequest="500" Clicked="TooltipTemplateChangeClicked"/>
+                <Button Text="NullBrush" HeightRequest="50" WidthRequest="500" Clicked="NullPalettebrushClicked"/>-->
+                <!--<Button Text="Clear itemsource" Clicked="ClearSeriesItemSourceClicked"/>
+                <Button Text="Null" Clicked="ClickForItemSourceNull"/>-->
+                <Button Text="Tooltip" HeightRequest="50" WidthRequest="500" Clicked="TooltipTemplateClick"></Button>
+                <Button Text="PaletteBrush" HeightRequest="50" WidthRequest="500" Clicked="PalettebrushClick"></Button>
+                <Button Text="Bindingpath" HeightRequest="50" WidthRequest="500" Clicked="DynamicallychangeBindingPath"></Button>
+                
+
+                <!--<Button Text="ReplaceSeries" Clicked="ClickEventForReplace"/>-->
+
+                
+                <Picker x:Name="entry" Title="StrokeThickness">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:Double}">
+                            <x:Double>0</x:Double>
+                            <x:Double>1</x:Double>
+                            <x:Double>2</x:Double>
+                            <x:Double>3</x:Double>
+                            <x:Double>4</x:Double>
+                            <x:Double>5</x:Double>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <Picker x:Name="fill" Title="Fill" >
+                    <Picker.ItemsSource >
+                        <x:Array Type="{x:Type Color}">
+                            <Color>red</Color>
+                            <Color>green</Color>
+                            <Color>blue</Color>
+                            <Color></Color>
+                        </x:Array>
+                    </Picker.ItemsSource>
+
+                </Picker>
+                <Picker x:Name="visible" Title="IsVisible">
+                    <Picker.Items>
+                        <x:String>False</x:String>
+                        <x:String>True</x:String>
+                    </Picker.Items>
+                </Picker>
+                <Picker x:Name="opacity" Title="Opacity">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:Double}">
+                            <x:Double>0</x:Double>
+                            <x:Double>0.2</x:Double>
+                            <x:Double>0.5</x:Double>
+                            <x:Double>0.7</x:Double>
+                            <x:Double>1</x:Double>
+                            
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <Picker x:Name="tooltip" Title="ShowTooltip">
+                    <Picker.Items>
+                        <x:String>False</x:String>
+                        <x:String>True</x:String>
+                    </Picker.Items>
+                </Picker>
+               
+              
+
+            </StackLayout>
+        </Frame>
+
+    </Grid>
+
+    
+
+</ContentPage>
